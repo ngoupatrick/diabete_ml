@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request
 from pathlib import Path
 import os
+import markdown
 from flask import jsonify
 from werkzeug.utils import secure_filename
 import warnings
 warnings.filterwarnings("ignore")
+
 from _bkcode.funct import *
 
 app = Flask(__name__)
@@ -58,6 +60,17 @@ def predict_many():
         file.save(full_path_file)#Enregistrement dans le repertoire d'upload
         predictions = predict_(loaded_model=load_model(), scaler = load_scaler(), data = full_path_file) 
         return jsonify(str(predictions))
+    
+#https://www.digitalocean.com/community/tutorials/how-to-use-python-markdown-to-convert-markdown-text-to-html
+#We are going to show markdown file README.md as helpp file.
+#So, we just have to modify README.md, and all things go for itself.
+#route: <[host:port]/help>
+@app.route("/help", methods = ["GET"])
+def md_help():
+    with open('README.md', 'r') as f:
+        text = f.read()
+        html = markdown.markdown(text)
+    return str(html)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True, port=8000)

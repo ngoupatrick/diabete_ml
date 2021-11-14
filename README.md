@@ -1,3 +1,4 @@
+#clone: from https://github.com/ngoupatrick/diabete_ml.git
 # diabete_ml
 repository for diabetes prediction in machine learning
 
